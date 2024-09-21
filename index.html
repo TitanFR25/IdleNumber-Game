@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Number test</title>
+    <style>
+        *{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <p>Mon nombre : <span id="number">0</span></p> 
+    <button id="increment" onclick="Increment()">+1</button> 
+    <button onclick="Decrement()" id="decrement">-1</button>
+    <button id="autoNumber" onclick="Auto()">auto</button>
+
+
+
+
+<script>
+    const number = document.getElementById('number');
+    const increment = document.getElementById('increment');
+    const decrement = document.getElementById('decrement');
+    const auto = document.getElementById('autoNumber');
+    const intervalId = null; 
+
+
+
+    function Increment(){
+        const currentValue = parseInt(number.textContent);
+        number.textContent = currentValue + 1
+    }
+
+    function Decrement(){
+        const currentValue = parseInt(number.textContent);
+        if(currentValue > 0){
+            number.textContent = currentValue - 1;
+        }
+    }
+    function Auto() {
+        // Si un intervalle est déjà en cours, on l'arrête d'abord
+        if (intervalId) {
+            clearInterval(intervalId);
+            intervalId = null;
+        } else {
+            // Sinon, on démarre un nouvel intervalle
+            intervalId = setInterval(() => {
+                const currentValue = parseInt(number.textContent);
+                number.textContent = currentValue + 1;
+            }, 1000); // Incrément toutes les secondes (1000 ms)
+        }
+    }
+</script>
+</body>
+</html>
