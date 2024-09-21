@@ -3,50 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auto Number test</title>
+    <title>Auto Number Test</title>
     <style>
-        *{
-            text-align: center;
+        @font-face {
+            font-family: roboto;
+            src: url(./font/Roboto-Regular.ttf);
         }
+        * {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            font-family: roboto;
+        }
+        header{
+            background-color: rgb(106, 106, 238);
+            padding: 1.2rem;
+        }
+        body{
+            background-color: black;
+        }
+        #number_contener {
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            color: white;
+        }
+        #button_contener{
+            margin-top: 1.2rem;
+        }
+        button{
+            height: 2rem;
+            width: 10rem;
+            background-color: rgb(238, 42, 42);
+            font-weight: bolder;
+            font-size: 1.3rem;
+        }
+
     </style>
 </head>
 <body>
-
-    <p>Mon nombre : <span id="number">0</span></p> 
-    <button id="increment" onclick="Increment()">+1</button> 
-    <button onclick="Decrement()" id="decrement">-1</button>
-    <button id="autoNumber" onclick="Auto()">auto</button>
-
-
-
+    <header>
+        <h1>IdleNumber</h1>
+    </header>
+    <div id="debut">
+        <div id="number_contener">
+            <p>Mon nombre : <span id="number">0</span></p> 
+        </div>
+        <div id="button_contener">
+            <button id="increment" onclick="Increment()">+1</button> 
+            <button onclick="Decrement()" id="decrement">-1</button>
+            <button id="autoNumber" onclick="Auto()">Auto</button>
+        </div>
+    </div>
+    
 
 <script>
     const number = document.getElementById('number');
-    const increment = document.getElementById('increment');
-    const decrement = document.getElementById('decrement');
-    const auto = document.getElementById('autoNumber');
-    const intervalId = null; 
+    let intervalId = null;  // Utilisez `let` pour permettre la réassignation
 
-
-
-    function Increment(){
+    function Increment() {
         const currentValue = parseInt(number.textContent);
-        number.textContent = currentValue + 1
+        number.textContent = currentValue + 1;
     }
 
-    function Decrement(){
+    function Decrement() {
         const currentValue = parseInt(number.textContent);
-        if(currentValue > 0){
+        if (currentValue > 0) {
             number.textContent = currentValue - 1;
         }
     }
+
     function Auto() {
-        // Si un intervalle est déjà en cours, on l'arrête d'abord
         if (intervalId) {
-            clearInterval(intervalId);
-            intervalId = null;
+            clearInterval(intervalId);  // Arrête l'intervalle en cours
+            intervalId = null;  // Réinitialise intervalId
         } else {
-            // Sinon, on démarre un nouvel intervalle
             intervalId = setInterval(() => {
                 const currentValue = parseInt(number.textContent);
                 number.textContent = currentValue + 1;
