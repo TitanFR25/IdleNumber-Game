@@ -15,29 +15,45 @@
             text-align: center;
             font-family: roboto;
         }
-        header{
+        header {
             background-color: rgb(106, 106, 238);
             padding: 1.2rem;
         }
-        body{
+        body {
             background-color: black;
         }
         #number_contener {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             margin-top: 2rem;
             color: white;
         }
-        #button_contener{
+        #button_contener {
             margin-top: 1.2rem;
         }
-        button{
+        button, .upgrade {
             height: 2rem;
             width: 10rem;
             background-color: rgb(238, 42, 42);
             font-weight: bolder;
             font-size: 1.3rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            color: white;
+            border: 2px solid white;
+            margin: 0.5rem;
         }
-
+        button:hover {
+            background-color: rgb(200, 30, 30);
+        }
+        .upgrade {
+            background-color: transparent;
+            color: white;
+        }
+        .upgrade.active {
+            background-color: rgb(42, 238, 42);
+            color: black;
+            pointer-events: none; /* Désactive le clic sur le texte d'amélioration */
+        }    
     </style>
 </head>
 <body>
@@ -49,20 +65,23 @@
             <p>Mon nombre : <span id="number">0</span></p> 
         </div>
         <div id="button_contener">
-            <button id="increment" onclick="Increment()">+1</button> 
-            <button onclick="Decrement()" id="decrement">-1</button>
-            <button id="autoNumber" onclick="Auto()">Auto</button>
+            <button id="increment" onclick="Increment()" aria-label="Ajouter 1">+1</button> 
+            <button onclick="Decrement()" id="decrement" aria-label="Soustraire 1">-1</button>
+            <button id="autoNumber" onclick="Auto()" aria-label="Activer/Désactiver l'auto-incrémentation">Auto</button>
+            <div id="upgradeButton" class="upgrade" onclick="Upgrade()">+1 au click</div>
         </div>
     </div>
     
 
 <script>
     const number = document.getElementById('number');
-    let intervalId = null;  // Utilisez `let` pour permettre la réassignation
+    let intervalId = null;  
+    let upgradeActive = false; 
 
     function Increment() {
         const currentValue = parseInt(number.textContent);
-        number.textContent = currentValue + 1;
+        // Ajouter 2 si l'upgrade est actif, sinon ajouter 1
+        number.textContent = currentValue + (upgradeActive ? 2 : 1);
     }
 
     function Decrement() {
@@ -74,13 +93,23 @@
 
     function Auto() {
         if (intervalId) {
-            clearInterval(intervalId);  // Arrête l'intervalle en cours
-            intervalId = null;  // Réinitialise intervalId
+            clearInterval(intervalId);
+            intervalId = null;
         } else {
             intervalId = setInterval(() => {
                 const currentValue = parseInt(number.textContent);
                 number.textContent = currentValue + 1;
-            }, 1000); // Incrément toutes les secondes (1000 ms)
+            }, 1000);
+        }
+    }
+
+    function Upgrade() {
+        if (!upgradeActive) {
+            const currentValue = parseInt(number.textContent);
+            number.textContent = currentValue + 2; // Ajoute 2 au compteur
+            const upgradeButton = document.getElementById('upgradeButton');
+            upgradeButton.classList.add('active');  
+            upgradeActive = true; 
         }
     }
 </script>
