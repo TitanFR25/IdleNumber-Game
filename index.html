@@ -30,7 +30,7 @@
         #button_contener {
             margin-top: 1.2rem;
         }
-        button, .upgrade {
+        button {
             height: 2rem;
             width: 10rem;
             background-color: rgb(238, 42, 42);
@@ -41,6 +41,8 @@
             color: white;
             border: 2px solid white;
             margin: 0.5rem;
+            display: inline-block;
+            position: relative;
         }
         button:hover {
             background-color: rgb(200, 30, 30);
@@ -48,12 +50,28 @@
         .upgrade {
             background-color: transparent;
             color: white;
+            padding: 0.5rem 0;
+            box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.5);
+            width: 10rem;
+            font-weight: bolder;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            color: white;
+            border: 2px solid white;
+            margin: 0.5rem;
+            position: relative;
         }
         .upgrade.active {
             background-color: rgb(42, 238, 42);
             color: black;
-            pointer-events: none; /* Désactive le clic sur le texte d'amélioration */
-        }    
+            pointer-events: none;
+        }
+        .price {
+            color: white;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -68,7 +86,10 @@
             <button id="increment" onclick="Increment()" aria-label="Ajouter 1">+1</button> 
             <button onclick="Decrement()" id="decrement" aria-label="Soustraire 1">-1</button>
             <button id="autoNumber" onclick="Auto()" aria-label="Activer/Désactiver l'auto-incrémentation">Auto</button>
-            <div id="upgradeButton" class="upgrade" onclick="Upgrade()">+1 au click</div>
+            <div id="upgradeButton" class="upgrade" onclick="Upgrade()">
+                +1 au click
+                <div class="price">Prix : 100</div>
+            </div>
         </div>
     </div>
     
@@ -80,7 +101,6 @@
 
     function Increment() {
         const currentValue = parseInt(number.textContent);
-        // Ajouter 2 si l'upgrade est actif, sinon ajouter 1
         number.textContent = currentValue + (upgradeActive ? 2 : 1);
     }
 
@@ -104,12 +124,15 @@
     }
 
     function Upgrade() {
-        if (!upgradeActive) {
-            const currentValue = parseInt(number.textContent);
-            number.textContent = currentValue + 2; // Ajoute 2 au compteur
+        const currentValue = parseInt(number.textContent);
+        if (!upgradeActive && currentValue >= 100) {
+            number.textContent = currentValue - 100;
+            number.textContent = parseInt(number.textContent) + 2; 
             const upgradeButton = document.getElementById('upgradeButton');
-            upgradeButton.classList.add('active');  
+            upgradeButton.classList.add('active'); 
             upgradeActive = true; 
+        } else if (currentValue < 100) {
+            alert("Vous devez avoir au moins 100 pour acheter l'amélioration !");
         }
     }
 </script>
