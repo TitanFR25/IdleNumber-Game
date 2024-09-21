@@ -57,15 +57,9 @@
             font-size: 1.3rem;
             cursor: pointer;
             transition: background-color 0.3s;
-            color: white;
             border: 2px solid white;
             margin: 0.5rem;
             position: relative;
-        }
-        .upgrade.active {
-            background-color: rgb(42, 238, 42);
-            color: black;
-            pointer-events: none;
         }
         .price {
             color: white;
@@ -88,20 +82,22 @@
             <button id="autoNumber" onclick="Auto()" aria-label="Activer/Désactiver l'auto-incrémentation">Auto</button>
             <div id="upgradeButton" class="upgrade" onclick="Upgrade()">
                 +1 au click
-                <div class="price">Prix : 100</div>
+                <div class="price">Prix : <span id="upgradePrice">100</span></div>
             </div>
         </div>
     </div>
     
-
 <script>
     const number = document.getElementById('number');
+    const upgradePriceDisplay = document.getElementById('upgradePrice');
     let intervalId = null;  
     let upgradeActive = false; 
+    let upgradePrice = 100;
+    let clickBonus = 1; // Bonus de clic initial
 
     function Increment() {
         const currentValue = parseInt(number.textContent);
-        number.textContent = currentValue + (upgradeActive ? 2 : 1);
+        number.textContent = currentValue + clickBonus; // Utilise le bonus de clic
     }
 
     function Decrement() {
@@ -125,14 +121,14 @@
 
     function Upgrade() {
         const currentValue = parseInt(number.textContent);
-        if (!upgradeActive && currentValue >= 100) {
-            number.textContent = currentValue - 100;
-            number.textContent = parseInt(number.textContent) + 2; 
-            const upgradeButton = document.getElementById('upgradeButton');
-            upgradeButton.classList.add('active'); 
-            upgradeActive = true; 
-        } else if (currentValue < 100) {
-            alert("Vous devez avoir au moins 100 pour acheter l'amélioration !");
+        if (currentValue >= upgradePrice) {
+            number.textContent = currentValue - upgradePrice; // Soustrait le prix
+            clickBonus += 1; // Augmente le bonus de clic
+            upgradePrice += 50; // Augmente le prix de 50 pour la prochaine amélioration
+            upgradePriceDisplay.textContent = upgradePrice; // Met à jour l'affichage du prix
+            alert("Amélioration activée ! Vous gagnez maintenant +" + clickBonus + " au lieu de +" + (clickBonus - 1) + ".");
+        } else {
+            alert("Vous devez avoir au moins " + upgradePrice + " pour acheter l'amélioration !");
         }
     }
 </script>
